@@ -1,0 +1,36 @@
+
+
+body{
+background-image: url('../images/galaxy.jpg');
+background-repeat:no-repeat;
+background-size:100%;
+background-attachment:scroll;
+}
+
+ul{
+background-image:url('.../images/plain blue.png');
+list-style-type:none;
+margin :0px;
+padding :20px 25px;
+overflow:hidden;
+width: 100%;
+top: 0;
+color: white;
+position: fixed;
+}
+
+li{
+float: left
+}
+
+li a     {
+display: block;
+color: black;
+text-align: center;
+padding:80px;
+text-decoration: none;
+}
+
+li a:hover{
+background-color: #f9a602;
+}

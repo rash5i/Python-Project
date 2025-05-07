@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <style>
+    @media only screen and (max-width:500px)
+    {
+    body{width:100%}
+    }
+    .navhead{
+        background-color:#071e67;
+        }
+    .font{
+    font-size:20px;
+    font-weight:500;
+    }
+    </style>
+</head>
+<body>
+<!--Background -->
+<div style="background-image: url('/static/images/galaxyy.jpg');background-repeat:no-repeat;
+background-position:center top;background-attachment:fixed;background-size:cover">
+
+        <!--    navigation bar-->
+<nav class="navbar navbar-expand-lg navbar-dark navhead">
+    <div class="container-fluid">
+        <a class="'navbar-brand white-text d-block d-md-none offset-5" href="#">
+            <img src="{% static 'images\scope-india-bird.png' %}"  width="10" alt="'scope bird logo"/>
+        </a>
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-evenly" id="navbarSupportedConent">
+            <ul class="navbar-nav mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link white-text" aria-current="page" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  white-text" href="{% url 'courses' %}">Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link white-text" href="{% url 'placement' %}">Placement Cell</a>
+                </li>
+            </ul>
+            <div class="navbar-nav mb-lg-0 d-md-block d-none">
+                <img src="{% static 'images\scope-india-bird.png' %}" width="60" alt="scope logo"/>
+            </div>
+            <ul class="navbar-nav mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link white-text" aria-current="page" href="{% url 'about' %}">Know Scope India</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link white-text" href="{% url 'contact_us' %}">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-warning nav-link active white-text" href="{% url 'registration' %}">Register </a>
+                </li>
+                {% if 'user' in request.session %}
+                <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'dashboard' %}">My Profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'edit' %}">Update Profile</a></li>
+<!--            <li><hr class="dropdown-divider"></li>-->
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-warning nav-link white-text" href="{% url 'login' %}">Login </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<br><br><br><br><br><br>
+    <span style="color:#000000;font:calibri;font-weight:900;font-size:50px;
+    display:flex;align-items:center;justify-content:center"><u>REGISTRATION</u></span><br>
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show">{{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    <!--    TABLE #1-->
+        <div style="width:800px; height:1400px;background-color:#D5DBDB;border-collapse:collapse;
+border:4px solid grey;margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto;display:flex;">
+            <!--    TABLE #2-->
+            <div style="width:720px; height:1320px;background-color:#D5DBDB;border-collapse:collapse;
+border:4px solid black;margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto;display:flex;">
+                <div style="width:95%;margin-left:30px;margin-right:30px;">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <br><br>
+<!--                    First Name-->
+                  <div>
+                    <label for="firstname" class="font">First Name</label>
+                    <input type="text" class="form-control border border-dark" id="firstname"
+                           placeholder="Enter first name" name="firstname" required>
+                  </div><br>
+<!--                    Last Name-->
+                    <div>
+                    <label for="lastname" class="font">Last Name</label>
+                    <input type="text" class="form-control border border-dark" id="lastname"
+                           placeholder="Enter last name" name="lastname">
+                    </div><br>
+<!--                    Gender-->
+                    <div>
+                    <label class="font">Gender</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input border border-dark" type="radio" id="male" value="option1" name="gender">
+                            <label class="form-check-label" for="male">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input border border-dark" type="radio"  id="female" value="option2" name="gender">
+                            <label class="form-check-label" for="female">Female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input border border-dark" type="radio"  id="other" value="option2" name="gender">
+                            <label class="form-check-label" for="other">Other</label>
+                        </div>
+                    </div><br>
+<!--                    date of birth-->
+                    <div class="bootstrap-iso">
+                     <div class="container-fluid">
+                      <div class="row">
+                       <div class="col-md-6 col-sm-6 col-xs-12">
+                           <!-- Form code begins -->
+                          <div class="form-group"> <!-- Date input -->
+                            <label class="control-label font" for="date">Date Of Birth</label>
+                            <input class="form-control border border-dark" id="date" name="date"
+                                   placeholder="MM/DD/YYYY" type="date" required />
+                          </div>
+                       </div>
+                      </div>
+                     </div>
+                    </div><br>
+<!--                    email-->
+                     <div>
+                    <label for="email" class="font">Email</label>
+                    <input type="text" class="form-control border border-dark" id="email" aria-describedby="emailHelp"
+                           placeholder="Enter email" name="email" required>
+                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                        else.</small>
+                    </div><br>
+<!--                    phone number-->
+                     <div>
+                    <label for="phonenumber" class="font">Phone Number</label>
+                    <input type="text" class="form-control border border-dark" id="phonenumber"
+                           placeholder="Enter phone number" name="phonenumber">
+                    </div><br>
+<!--                    country-->
+                    <div>
+                            <label for="country" class="font">Country</label>
+                            <select id="country" name="country" class="form-control">
+                                <option value="India">India</option>
+                            </select>
+                    </div></br>
+<!--                            state-->
+                          <div>
+                            <label for="state" class="font">State</label>
+                            <select id="state" name="state" class="form-control" onchange="updatecity()">
+                                <option value="Kerala">Kerala</option>
+                                <option value="TamilNadu">Tamil Nadu</option>
+                            </select>
+                          </div><br>
+<!--                            city-->
+                          <div>
+                            <label for="city" class="font">City</label>
+                            <select id="city" class="form-control" name="city">
+                                <option value="Trivandrum">Trivandrum</option>
+                                <option value="Ernakulam">Ernakulam</option>
+                                <option value="Malappuram">Malappuram</option>
+                            </select>
+                          </div><br>
+<!--                    hobbies-->
+                    <label class="font">Hobbies</label>
+                    <div class="form-check">
+                      <input class="form-check-input border border-dark" type="checkbox" value="" id="painting" name="hobbies">
+                      <label class="form-check-label" for="painting">
+                        Painting
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input border border-dark" type="checkbox" value="" id="reading" name="hobbies">
+                      <label class="form-check-label" for="reading">
+                        Reading
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input border border-dark" type="checkbox" value="" id="swimming" name="hobbies">
+                      <label class="form-check-label" for="swimming">
+                        Swimming
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input border border-dark" type="checkbox" value="" id="travelling" name="hobbies">
+                      <label class="form-check-label" for="travelling">
+                        Travelling
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input border border-dark" type="checkbox" value="" id="others" name="hobbies">
+                      <label class="form-check-label" for="others">
+                        Others
+                      </label>
+                    </div><br>
+<!--                    file upload-->
+                    <div>
+                    <label for="profile" class="font">Profile Picture</label>
+                    <input type="file" class="form-control border border-dark" id="profile"
+                           placeholder="select image" name="profilepicture">
+                  </div></br></br>
+                  <input type="submit" class="btn btn-primary border border-dark"><br><br>
+                    <small><a href="{% url 'login' %}">Already Have an account?<br> Login</a> </small>
+                 </form>
+                </div>
+            </div>
+        </div>
+    </div><br><br><br>
+</div>
+<script>
+    function updatecity(){
+    var state=document.getElementById("state").value;
+    var city=document.getElementById("city");
+    var country=document.getElementById("country");
+<!--    to remove data in 'city'-->
+    city.innerHTML=""
+
+    if(state=='Kerala'){
+    var cities=['Trivandrum','Ernakulam','Malappuram']
+    for(var i=0;i<cities.length;i++){
+    var option=document.createElement('option')
+    option.text=cities[i]
+    city.add(option)
+    }
+    }
+
+    if(state=='TamilNadu'){
+    var cities=['Nagercoil','Chennai','Kanyakumari']
+    for(var i=0;i<cities.length;i++){
+    var option=document.createElement('option')
+    option.text=cities[i]
+    city.add(option)
+    }
+    }
+    }
+</script>
+</body>
+</html>
+
+
+

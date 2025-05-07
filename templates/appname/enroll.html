@@ -1,0 +1,181 @@
+        {%  extends 'appname/layout.html' %}
+        {% load static %}
+        {% block content-1 %}
+        <style>
+            h2{
+            align-items:center;
+            justify-content:center;
+            display:flex;
+            }
+            hr{
+            color:white;
+            }
+        </style>
+
+<!--Background #1-->
+<div style="background-image: url('/static/images/galaxyy.jpg');background-repeat:no-repeat;
+background-position:center top;background-attachment:fixed;
+background-size:cover"><br><br>
+
+<!--    heading-->
+    <h2><u>Opted Courses</u></h2><br>
+
+<!--opted course table-->
+<div class="d-flex justify-content-center">
+<table class="table table-light table-center table-striped w-75">
+  <thead>
+    <tr>
+      <th scope="col">Course Name</th>
+      <th scope="col">Enrolled Date</th>
+      <th scope="col">Remove</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for opt in optedcourse %}
+    <tr>
+      <td scope="row">{{opt.coursename}}</td>
+      <td>{{opt.joindate}}</td>
+      <th><button style="color:red;width:110px;height:30px;"  onclick="removeCourse({{opt.id}})"><b>delete</b></button></th>
+    </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+</div><hr>
+
+<!-- Modal -->
+<div class="modal fade" id="removecourse" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+<!--        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>-->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are You Sure You Want To Remove The Course ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <a href="" class="btn btn-primary" id="deleteconfirmbtn">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <h2><u>Search For New Courses</u></h2><br>
+
+    <!--    search bar-->
+    <div class="row w-100" >
+        <div class="d-flex justify-content-center align-items-center">
+        <div class="col-5">
+    <div class="input-group">
+<!--     <div class="form-outline">-->
+        <input type="search" id="form1" class="form-control" name="search" />
+<!--         <label class="form-label" for="form1"></label>-->
+<button id="course-search-input" type="button" class="btn btn-primary"
+          style="border:2px solid white;">
+          <i class="fas fa-search">SEARCH</i>
+        </button>
+
+     </div>
+
+            <div id="course-search-results">
+    <!-- Search results will be displayed here -->
+            </div>
+
+
+            <!-- Scrollable modal course details-->
+    <div class="modal-dialog modal-dialog-scrollable">
+
+<!-- Modal -->
+<div class="modal fade" id="coursedetailmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <form method="post">
+            {% csrf_token %}
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="coursedetailtitle">Title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div>Duration:<h6 class=" mb-2 text-muted" id="coursedetailduration">6 months</h6></div>
+          <div>Fee:<h6 class=" mb-2 text-muted" id="coursedetailfee">₹42000/-</h6></div>
+
+          <div>Content:
+              <ul id="coursedetailcontent">
+              </ul>
+          </div>
+      </div>
+        <input type="hidden" name="course_id" id="course_id" value="">
+        <input type="hidden" name="user_id" id="user_id" value="">
+        <input type="hidden" name="course_name" id="course_name" value="">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Enroll</button>
+      </div>
+     </form>
+    </div>
+  </div>
+</div>
+    </div>
+<!--    </div>-->
+        </div>
+        </div>
+     </div>
+    <script>
+        function removeCourse(opt_id){
+        var url = `{% url 'delete' %}?id=${opt_id}`
+            $("#deleteconfirmbtn").attr("href",url)
+            $("#removecourse").modal('show')
+        }
+        function showcourse(data){
+            $("#coursedetailtitle").text(data.course_name)
+            $("#coursedetailduration").text(data.duration)
+            $("#coursedetailfee").text(data.fee)
+            $("#course_id").val(data.id)
+            $("#user_id").val(data.id)
+            $("#course_name").val(data.course_name)
+            var content = data.contents.split(",")
+            for(i of content){
+            $("#coursedetailcontent").append(`<li>${i}</li>`)
+            }
+
+            $("#coursedetailmodal").modal('show')
+
+        }
+
+        $(document).ready(function () {
+            // Select elements
+             $('#form1').on('change',function() {
+             var query = $('#form1').val()
+            // Send an AJAX GET request to the Django view
+                $.ajax({
+                    url: "{% url 'Search' %}?search="+query,
+                    type: 'GET',
+                    success: function (data) {
+                        // Replace the content of the search results container with the response data
+                        var content= `<div class="row row-cols-1 row-cols-md-2 g-4 mt-3 ">`;
+
+                        for(i of data){
+                            var url = "{% url 'course_detail' name=1234 %}".replace(/1234/,i.course_name)
+                            content += '<div class="col"><div class="card" style="width: 18rem;"><div class="card-body">'
+                            content += `<h5 class="card-title">${i.course_name}</h5>`
+                            content += `<h6 class="card-subtitle mb-2 text-muted">${i.duration}</h6>`
+                            content += `<p class="card-text">₹${i.fee}/-</p>`
+                            content += `<button onclick='showcourse(${JSON.stringify(i)})' class="btn btn-primary" >More Details...</button></div></div></div>`
+                        }
+                        content += `</div>`
+                        console.log(data)
+                        $('#course-search-results').html(content);
+                        content="";
+                    },
+                    error: function () {
+                        $('#course-search-results').html('<p>An error occurred while searching for courses.</p>');
+                    }
+                })
+             })
+        })
+    </script>
+<br><br><br>
+
+        {% endblock %}

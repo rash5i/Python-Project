@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="//geodata.solutions/includes/countrystatecity.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <style>
+    @media only screen and (max-width:500px)
+    {
+    body{width:100%}
+    }
+    .navhead{
+        background-color:#071e67;
+        }
+    .font{
+    font-size:20px;
+    font-weight:500;
+    }
+    .bg{
+    background-color:#071e67;
+    }
+    .icon{
+        font-size:140px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        }
+    </style>
+</head>
+<body>
+<!--Background -->
+<div style="background-image: url('/static/images/galaxyy.jpg');background-repeat:no-repeat;
+background-position:center top;background-attachment:fixed;background-size:cover">
+
+        <!--    navigation bar-->
+<nav class="navbar navbar-expand-lg navbar-dark navhead">
+    <div class="container-fluid">
+        <a class="'navbar-brand white-text d-block d-md-none offset-5" href="#">
+            <img src="{% static 'images\scope-india-bird.png' %}"  width="10" alt="'scope bird logo"/>
+        </a>
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-evenly" id="navbarSupportedConent">
+            <ul class="navbar-nav mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link white-text" aria-current="page" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  white-text" href="{% url 'courses' %}">Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link white-text" href="{% url 'placement' %}">Placement Cell</a>
+                </li>
+            </ul>
+            <div class="navbar-nav mb-lg-0 d-md-block d-none">
+                <img src="{% static 'images\scope-india-bird.png' %}" width="60" alt="scope logo"/>
+            </div>
+            <ul class="navbar-nav mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link white-text" aria-current="page" href="{% url 'about' %}">Know Scope India</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link white-text" href="{% url 'contact_us' %}">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-warning nav-link active white-text" href="{% url 'registration' %}">Register </a>
+                </li>
+                {% if 'user' in request.session %}
+                <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'dashboard' %}">My Profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'edit' %}">Update Profile</a></li>
+<!--            <li><hr class="dropdown-divider"></li>-->
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-warning nav-link white-text" href="{% url 'login' %}">Login </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<br><br><br><br><br><br>
+    <span style="color:#000000;font:calibri;font-weight:900;font-size:50px;
+    display:flex;align-items:center;justify-content:center"><u>LOGIN</u></span><br>
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show">{{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    <!--    TABLE #1-->
+        <div style="width:800px; height:540px;background-color:#D5DBDB;border-collapse:collapse;
+border:4px solid grey;margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto;display:flex;">
+            <!--    TABLE #2-->
+            <div style="width:720px; height:460px;background-color:#D5DBDB;border-collapse:collapse;
+border:4px solid black;margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto;display:flex;">
+                <div style="width:95%;margin-left:30px;margin-right:30px;">
+                <form method="post">
+                    {% csrf_token %}
+                    <br><br>
+                    <!--profile icon-->
+<i class="fa fa-user-circle icon" aria-hidden="true"></i>
+<br>
+<!--                    Username-->
+                  <div>
+
+                    <input type="text" class="form-control border border-dark" id="username"
+                           placeholder="username" name="username">
+                  </div><br>
+
+<!--                    Password-->
+                     <div>
+                    <input type="password" class="form-control border border-dark" id="password"
+                           placeholder="password" name="password">
+                         <small><a href="{% url 'forgot_password' %}">forgot password?</a> </small>
+                    </div><br>
+<!--                    submit-->
+                    <div>
+                  <button type="submit" class="btn btn-primary border border-dark bg">LOGIN</button><br>
+                        <small><a href="{% url 'registration' %}">Not Registered Yet?<br>Register</a> </small>
+                        {{message}}
+                    </div>
+                 </form>
+                </div>
+            </div>
+        </div>
+    </div><br><br><br>
+</div>
+</body>
+</html>
+
+
+
